@@ -27,11 +27,8 @@ class CampaignIndex extends Component {
   render() {
 
     return (
-      <div>
-        <Layout>
-          <link
-            rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css"
-          />
+      <Layout>
+        <div>
           <h3>Open Campaign</h3>
 
           <Button floated="right"
@@ -41,9 +38,8 @@ class CampaignIndex extends Component {
           />
 
           { this.renderCampaigns() }
-          
-        </Layout>
-      </div>
+          </div>
+      </Layout>
     )
   }
 }
