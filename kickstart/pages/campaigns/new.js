@@ -7,11 +7,14 @@ import web3 from '../../ethereum/web3'
 class CampaignNew extends Component {
   state ={
     minimuContribution: '',
-    errorMessage: ''
+    errorMessage: '',
+    loading: false
   }
 
   onSubnit = async (event) => {
     event.preventDefault()
+
+    this.setState({ loading: true, errorMessage: '' })
 
     try {
 
@@ -24,6 +27,8 @@ class CampaignNew extends Component {
     } catch (err) {
       this.setState({ errorMessage: err.message })
     }
+
+    this.setState({ loading: false })
   }
 
   render() {
@@ -43,7 +48,7 @@ class CampaignNew extends Component {
             />
           </Form.Field>
 
-          <Button primary>Create!</Button>
+          <Button loading={this.state.loading} primary>Create!</Button>
           <Message error header="Oops!" content={this.state.errorMessage} />
         </ Form>
       </Layout>
