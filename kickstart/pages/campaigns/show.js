@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Layout from '../../components/Layout'
 import Campaign from '../../ethereum/campaign'
 import { Card } from 'semantic-ui-react'
+import web3 from '../../ethereum/web3'
 
 class CampaignShow extends Component {
   static async getInitialProps(props) {
@@ -13,14 +14,14 @@ class CampaignShow extends Component {
     return {
       minimumContribution: summary[0],
       balance: summary[1],
-      requestsCounnt: summary[2],
+      requestsCount: summary[2],
       approversCount: summary[3],
       manager: summary[4]
      }
   }
 
   renderCards() {
-    const { balance, manager, minimumContribution, requestsCounnt, approversCount } = this.props
+    const { balance, manager, minimumContribution, requestsCount, approversCount } = this.props
 
     const items = [
       {
@@ -28,6 +29,27 @@ class CampaignShow extends Component {
         meta: 'Address of Manager',
         description: 'The manager created this campaign and can create requests to qithdraw maney',
         style: { overflowWrap: 'break-word' }
+      },
+      {
+
+      header: minimumContribution,
+      meta: 'Minimum Contribution (wei)',
+      description: 'You must contribute at least this much wei to become a approver'
+      },
+      {
+        header: requestsCount,
+        meta: 'number of Requests',
+        description: 'A request tries to withdraw moaney from the contract, Requests must be approved by approvers'
+      },
+      {
+        header: approversCount,
+        meta: 'Number of approvers',
+        description: 'Number of people who have already donated to this campaign'
+      },
+      {
+        header: web3.utils.fromWei(balance, 'ether'),
+        meta: 'Campaign Balance (ether)',
+        description: 'The balance is how much money this campaign has left to spend'
       }
     ]
 
