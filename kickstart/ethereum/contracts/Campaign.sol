@@ -40,43 +40,59 @@ contract Campaign {
         minimumContribution = minimum;
     }
 
-   function contribute() public payable {
-       require(msg.value > minimumContribution);
+    function contribute() public payable {
+        require(msg.value > minimumContribution);
 
-       approvers[msg.sender] = true;
-       approversCount++;
-   }
+        approvers[msg.sender] = true;
+        approversCount++;
+    }
 
-   function createRequest(string description, uint value, address receipient) public restrictedManagerOnly {
+    function createRequest(string description, uint value, address receipient) public restrictedManagerOnly {
     //   require(approvers[msg.sender]);
-       Request memory newRequest = Request({
-          description: description,
-          value: value,
-          receipient: receipient,
-          complete: false,
-          approvalCount: 0
-       });
+        Request memory newRequest = Request({
+            description: description,
+            value: value,
+            receipient: receipient,
+            complete: false,
+            approvalCount: 0
+        });
 
-       requests.push(newRequest);
-   }
+        requests.push(newRequest);
+    }
 
-   function approveRequest(uint index) public {
-       Request storage request = requests[index];
+    function approveRequest(uint index) public {
+        Request storage request = requests[index];
 
-       require(approvers[msg.sender]);
-       require(!request.approvals[msg.sender]);
+        require(approvers[msg.sender]);
+        require(!request.approvals[msg.sender]);
 
-       request.approvals[msg.sender] = true;
-       request.approvalCount++;
-   }
+        request.approvals[msg.sender] = true;
+        request.approvalCount++;
+    }
 
-   function finalizeRequest(uint index) public restrictedManagerOnly {
-       Request storage request = requests[index];
+    function finalizeRequest(uint index) public restrictedManagerOnly {
+        Request storage request = requests[index];
 
-       require(request.approvalCount > (approversCount / 2));
-       require(!request.complete);
+        require(request.approvalCount > (approversCount / 2));
+        require(!request.complete);
 
-       request.receipient.transfer(request.value);
-       request.complete = true;
-   }
+        request.receipient.transfer(request.value);
+        request.complete = true;
+    }
+
+    function getSummary() public view returns (
+        uint, uint, uint, uint, address
+    ) {
+        return (
+            minimumContribution,
+            this.balance,
+            requests.length,
+            approversCount,
+            manager
+        );
+    }
+
+    function getRequestsCount() public view returns (uint) {
+        return requests.length;
+    }
 }

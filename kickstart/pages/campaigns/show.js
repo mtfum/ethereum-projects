@@ -10,5 +10,5 @@ class CampaignShow extends Component {
     ) 
   }
 }
-
+ 
 export default CampaignShow
