@@ -3,6 +3,7 @@ import Layout from '../../components/Layout'
 import Campaign from '../../ethereum/campaign'
 import { Card } from 'semantic-ui-react'
 import web3 from '../../ethereum/web3'
+import ContributeForm from '../../components/contributeForm'
 
 class CampaignShow extends Component {
   static async getInitialProps(props) {
@@ -60,8 +61,8 @@ class CampaignShow extends Component {
     return (
       <Layout>
         <h3>Campaign Show</h3>
-
         {this.renderCards()}
+        <ContributeForm />
       </Layout>
     )
   }
