@@ -9,7 +9,9 @@ class RequestsNew extends Component {
   state ={
     value: '',
     description: '',
-    receipent: ''
+    receipent: '',
+    loading: false,
+    errorMessage: ''
   }
 
   static async getInitialProps(props) {
@@ -20,6 +22,8 @@ class RequestsNew extends Component {
 
   onSubmit = async event => {
     event.preventDefault()
+
+    this.setState({ loading: true, errorMEssage: '' })
 
     const campaign = Campaign(this.props.address)
     const { description, value, receipient } = this.state
@@ -33,17 +37,25 @@ class RequestsNew extends Component {
         )
         .send({ from: accounts[0] })
 
+      Router.pushRoute(`/campaign/${this.props.address}/requests`)
     } catch (err) {
 
+      this.setState({ errorMessage: err.message })
+
     }
+
+    this.setState({ loading: false })
   }
 
   render() {
     return (
       <Layout>
+        <Link route={`/campaigns/${this.props.address}/requests`}>
+          <a>Back</a>
+        </Link>
 				<h3>Create a Request</h3>
 
-				<Form onSubmit={this.onSubmit}>
+				<Form onSubmit={this.onSubmit} error={!!this.state.errorMessage}>
 					<Form.Field>
 						<label>Description</label>
             <Input 
@@ -68,7 +80,9 @@ class RequestsNew extends Component {
             />
           </Form.Field>
 
-          <Button primary>Create!        </Button>
+          <Message error header="Oops!" content={this.state.errorMessage} />
+
+          <Button primary loading={this.state.loading}>Create!        </Button>
 
 				</Form>
 			</Layout>
