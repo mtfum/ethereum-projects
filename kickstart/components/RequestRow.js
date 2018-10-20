@@ -7,14 +7,17 @@ class RequestRow extends Component {
 
     const { Row, Cell } = Table
     
-    const { id, request } = this.props
+    const { id, request, approversCount } = this.props;
 
     return <Row>
 				<Cell>{id}</Cell>
 				<Cell>{request.description}</Cell>
-				<Cell>{web3.utils.fromWei(request.value, 'ether')}</Cell>
+				<Cell>{web3.utils.fromWei(request.value, "ether")}</Cell>
 				<Cell>{request.receipient}</Cell>
-        <Cell>{request.approvalCount}</Cell>
+				<Cell>
+					{request.approvalCount}/{approversCount}
+				</Cell>
+
 				<Cell>{request.complete}</Cell>
 			</Row>;
   }
